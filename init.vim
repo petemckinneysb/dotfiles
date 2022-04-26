@@ -7,6 +7,7 @@ set clipboard=unnamedplus
 set incsearch
 set noshowmode
 set relativenumber
+set ic
 
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
@@ -28,13 +29,11 @@ Plug 'ajh17/vimcompletesme'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
+Plug 'jiangmiao/auto-pairs'
 Plug 'airblade/vim-gitgutter'
 "node and typescript
-"every language and the kitchen sink
-Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plug 'jiangmiao/auto-pairs'
 "telescope stuff
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
@@ -210,6 +209,6 @@ nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 " RG
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-nnoremap \ :Ag<SPACE>
-nnoremap <Leader>ps :Ag<SPACE>
+command -nargs=+ -complete=file -bar Rg silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Rg<SPACE>
+nnoremap <Leader>ps :Rg<SPACE>

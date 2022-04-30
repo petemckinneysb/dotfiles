@@ -22,7 +22,6 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'epmatsw/ag.vim'
 Plug 'morhetz/gruvbox'
 Plug 'vim-utils/vim-man'
 Plug 'ajh17/vimcompletesme'
@@ -73,7 +72,6 @@ set hidden
 let mapleader= " "
 
 "macros
-let @l = 'yiwoconsole.log(^[pa, ''^[pA;'
 
 let g:coc_global_extensions = ['coc-tsserver' ]
 
@@ -146,21 +144,6 @@ omap ac <Plug>(coc-classobj-a)
 let NERDTreeMinimalUI = 1
 lua require'nvim-treesitter.configs'.setup { highlight = { enable = true  }, incremental_selection = { enable = true }, textobjects = { enable = true }}
 
-if executable('ag')
-    " use age instead of grep
-    set grepprg=ag\ --nogroup\ --nocolor\ --column
-
-    " Use ag in CtrlP for listing files. Lightning fast and
-    " respects .gitignore "
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-    " ag is fast enough that CtrlP doesn't need to cache "
-    let g:ctrlp_use_caching = 0
-endif
-
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-let g:ag_working_path_mode="r"
-
 "   " For simple sizing of splits.
 map - <C-W>-
 map + <C-W>+
@@ -189,12 +172,23 @@ nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>gs <cmd>Telescope git_status<cr>
+nnoremap <leader>gst <cmd>Telescope git_stash<cr>
+nnoremap <leader>gbr <cmd>Telescope git_branches<cr>
+nnoremap <leader>gc <cmd>Telescope git_commits<cr>
+nnoremap <leader>gbc <cmd>Telescope git_bcommits<cr>
+nnoremap <leader>K <cmd>Telescope grep_string<cr>
 
 "lua functions
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap <leader>gs <cmd>lua require('telescope.builtin').git_status()<cr>
+nnoremap <leader>gst <cmd>lua require('telescope.builtin').git_stash()<cr>
+nnoremap <leader>gc <cmd>lua require('telescope.builtin').git_commits()<cr>
+nnoremap <leader>gbc <cmd>lua require('telescope.builtin').git_bcommits()<cr>
+nnoremap <leader>K <cmd>lua require('telescope.builtin').grep_string()<cr>
 
 
 " Copy current buffer file path

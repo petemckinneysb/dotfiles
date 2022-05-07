@@ -173,7 +173,7 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 nnoremap <leader>gs <cmd>Telescope git_status<cr>
-nnoremap <leader>gst <cmd>Telescope git_stash<cr>
+nnoremap <leader>gt <cmd>Telescope git_stash<cr>
 nnoremap <leader>gbr <cmd>Telescope git_branches<cr>
 nnoremap <leader>gc <cmd>Telescope git_commits<cr>
 nnoremap <leader>gbc <cmd>Telescope git_bcommits<cr>
@@ -185,7 +185,7 @@ nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 nnoremap <leader>gs <cmd>lua require('telescope.builtin').git_status()<cr>
-nnoremap <leader>gst <cmd>lua require('telescope.builtin').git_stash()<cr>
+nnoremap <leader>gt <cmd>lua require('telescope.builtin').git_stash()<cr>
 nnoremap <leader>gc <cmd>lua require('telescope.builtin').git_commits()<cr>
 nnoremap <leader>gbc <cmd>lua require('telescope.builtin').git_bcommits()<cr>
 nnoremap <leader>K <cmd>lua require('telescope.builtin').grep_string()<cr>

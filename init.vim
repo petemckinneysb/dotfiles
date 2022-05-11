@@ -165,6 +165,7 @@ noremap <leader>{ f{V%
 nmap <leader><leader> ^
 vmap <Leader>y "+y
 vmap <Leader>= <C-W><C-=>
+nnoremap <leader>ga <cmd>Git blame<cr>
 
 " telescope
 " Find files using telescope command line sugar

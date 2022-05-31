@@ -21,7 +21,6 @@ filetype plugin indent on
 call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'morhetz/gruvbox'
 Plug 'vim-utils/vim-man'
 Plug 'ajh17/vimcompletesme'
@@ -41,11 +40,6 @@ Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
 "treesitter stuff
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-
-"debug stuff
-Plug 'mfussenegger/nvim-dap'
-Plug 'Pocco81/DAPInstall.nvim'
-Plug 'szw/vim-maximizer'
 
 call plug#end()
 
@@ -185,11 +179,22 @@ nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap <leader>fo <cmd>lua require('telescope.builtin').oldfiles()<cr>
+nnoremap <leader>fj <cmd>lua require('telescope.builtin').jumplist()<cr>
+nnoremap <leader>fr <cmd>lua require('telescope.builtin').resume()<cr>
+
+
 nnoremap <leader>gs <cmd>lua require('telescope.builtin').git_status()<cr>
 nnoremap <leader>gt <cmd>lua require('telescope.builtin').git_stash()<cr>
 nnoremap <leader>gc <cmd>lua require('telescope.builtin').git_commits()<cr>
 nnoremap <leader>gbc <cmd>lua require('telescope.builtin').git_bcommits()<cr>
+
 nnoremap <leader>K <cmd>lua require('telescope.builtin').grep_string()<cr>
+nnoremap <leader>r <cmd>lua require('telescope.builtin').registers()<cr>
+nnoremap <leader>sh <cmd>lua require('telescope.builtin').search_history()<cr>
+nnoremap <leader>ch <cmd>lua require('telescope.builtin').command_history()<cr>
+
+map œ <M-q>
 
 
 " Copy current buffer file path

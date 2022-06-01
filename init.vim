@@ -66,6 +66,7 @@ set hidden
 let mapleader= " "
 
 "macros
+let g:gitgutter_map_keys = 0
 
 let g:coc_global_extensions = ['coc-tsserver' ]
 
@@ -160,6 +161,10 @@ nmap <leader><leader> ^
 vmap <Leader>y "+y
 vmap <Leader>= <C-W><C-=>
 nnoremap <leader>ga <cmd>Git blame<cr>
+
+nmap ghs <Plug>(GitGutterStageHunk)
+nmap ghu <Plug>(GitGutterUndoHunk)
+nmap ghp <Plug>(GitGutterPreviewHunk)
 
 " telescope
 " Find files using telescope command line sugar

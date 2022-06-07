@@ -51,6 +51,8 @@ call plug#end()
 let g:neoformat_try_node_exe = 1
 autocmd BufWritePre *.js Neoformat
 autocmd BufWritePre *.ts Neoformat
+autocmd BufWritePre *.html Neoformat
+autocmd BufWritePre *.scss Neoformat
 
 set completeopt=menu,menuone,noselect
 

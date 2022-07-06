@@ -24,13 +24,18 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<space><space>"] = "^"
+lvim.keys.normal_mode["<space>sv"] = ":vsplit<cr>"
+lvim.keys.normal_mode["<space>ss"] = ":split<cr>"
 lvim.keys.normal_mode["<space>ga"] = ":Git blame<cr>"
+
 lvim.keys.normal_mode["<space>fp"] = "<cmd>Telescope resume<cr>"
 lvim.keys.normal_mode["<space>ff"] = "<cmd>Telescope find_files<cr>"
 lvim.keys.normal_mode["<space>fg"] = "<cmd>Telescope git_files<cr>"
 lvim.keys.normal_mode["<space>fr"] = "<cmd>Telescope lsp_references<cr>"
-lvim.keys.normal_mode["<space>sv"] = ":vsplit<cr>"
-lvim.keys.normal_mode["<space>ss"] = ":split<cr>"
+lvim.keys.normal_mode["<space>fj"] = "<cmd>Telescope jumplist<cr>"
+lvim.keys.normal_mode["<space>fo"] = "<cmd>Telescope oldfiles<cr>"
+lvim.keys.normal_mode["<space>f#"] = "<cmd>Telescope registers<cr>"
+
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
 -- override a default keymapping

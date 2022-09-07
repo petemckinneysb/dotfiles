@@ -35,6 +35,7 @@ lvim.keys.normal_mode["<space>fr"] = "<cmd>Telescope lsp_references<cr>"
 lvim.keys.normal_mode["<space>fj"] = "<cmd>Telescope jumplist<cr>"
 lvim.keys.normal_mode["<space>fo"] = "<cmd>Telescope oldfiles<cr>"
 lvim.keys.normal_mode["<space>f#"] = "<cmd>Telescope registers<cr>"
+lvim.keys.normal_mode["<space>fs"] = "<cmd>Telescope git_stash<cr>"
 
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
@@ -146,7 +147,7 @@ formatters.setup {
     {
         command = "prettier",
         default_timeout = 10000,
-        filetypes = { "typescript", "html", "scss", "json", "javascript" },
+        filetypes = { "typescript", "html", "scss", "json", "javascript", "markdown" },
     },
 }
 

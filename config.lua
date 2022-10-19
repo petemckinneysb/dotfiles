@@ -7,6 +7,8 @@ a global executable or a path to
 an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
+-- lvim.builtin.bufferline.options.indicator_icon = nil
+-- lvim.builtin.bufferline.options.indicator = { style = "icon", icon = "▎" }
 
 -- general
 lvim.log.level = "warn"
@@ -37,6 +39,10 @@ lvim.keys.normal_mode["<space>fo"] = "<cmd>Telescope oldfiles<cr>"
 lvim.keys.normal_mode["<space>f#"] = "<cmd>Telescope registers<cr>"
 lvim.keys.normal_mode["<space>fs"] = "<cmd>Telescope git_stash<cr>"
 
+
+lvim.keys.insert_mode["jk"] = "<Esc>"
+lvim.keys.insert_mode["kk"] = "<Esc>"
+lvim.keys.insert_mode["kj"] = "<Esc>"
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
 -- override a default keymapping
@@ -142,11 +148,13 @@ lvim.builtin.treesitter.highlight.enabled = true
 --     filetypes = { "typescript", "typescriptreact" },
 --   },
 -- }
+-- vim.lsp.set_log_level("TRACE")
+
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
     {
         command = "prettier",
-        default_timeout = 10000,
+        timeout_ms = 2000,
         filetypes = { "typescript", "html", "scss", "json", "javascript", "markdown" },
     },
 }

@@ -226,6 +226,9 @@ nnoremap <leader>ch <cmd>lua require('telescope.builtin').command_history()<cr>
 
 map œ <M-q>
 
+imap jk <Esc>
+imap jj <Esc>
+imap kj <Esc>
 
 " Copy current buffer file path
 " Fixme

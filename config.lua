@@ -13,7 +13,6 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "onedarker"
 
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -82,7 +81,6 @@ lvim.keys.insert_mode["kj"] = "<Esc>"
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
-lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
@@ -160,7 +158,6 @@ formatters.setup {
 }
 
 require("lvim.lsp.manager").setup("angularls")
-vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "html" })
 
 -- -- set additional linters
 -- local linters = require "lvim.lsp.null-ls.linters"

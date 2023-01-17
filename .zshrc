@@ -47,11 +47,14 @@ export PIPENV_VIEW_IN_PROJECT=1
 #autoload -Uz compinit && compinit
 export PATH=$PATH:/Applications/Sublime\ Merge.app/Contents/SharedSupport/bin
 
+export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+export PUPPETEER_EXECUTABLE_PATH=`which chromium`
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/pete.mckinney/.oh-my-zsh"
+export ZSH="/Users/43159/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,

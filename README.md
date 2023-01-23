@@ -1,6 +1,6 @@
 # Adding symlinks to dotfiles repository configuration files
 
-In order: neovim, tmux, LunarVim
+In order: tmux, LunarVim
 
 ```
     ln -sf ~/github/dotfiles/.tmux.conf ~/.tmux.conf
@@ -19,3 +19,7 @@ Install the angular language service globally for a target version by:
 ```bash
 npm install --global @angular/language-service@13
 ```
+
+# tmux plugins: 
+
+Install by cloning the following repository https://github.com/tmux-plugins/tpm

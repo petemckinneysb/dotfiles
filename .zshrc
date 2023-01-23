@@ -33,6 +33,7 @@ alias gscut="git status -s | cut -c4-"
 alias fzadd="git status -s | cut -c4- | fzf -m | xargs git add"
 alias fzreset="git status -s | cut -c4- | fzf -m | xargs git reset"
 alias fzcheckout="git branch | fzf | xargs git checkout"
+alias prname="git branch --show-current | pbcopy"
 
 alias version="cat package.json | grep -i \"version\""
 

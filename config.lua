@@ -37,11 +37,17 @@ lvim.keys.normal_mode["<space>fj"] = "<cmd>Telescope jumplist<cr>"
 lvim.keys.normal_mode["<space>fo"] = "<cmd>Telescope oldfiles<cr>"
 lvim.keys.normal_mode["<space>f#"] = "<cmd>Telescope registers<cr>"
 lvim.keys.normal_mode["<space>fs"] = "<cmd>Telescope git_stash<cr>"
-
+lvim.keys.normal_mode["<space>fm"] = "<cmd>Telescope marks<cr>"
+lvim.keys.normal_mode["<space>fsh"] = "<cmd>Telescope search_history<cr>"
+lvim.keys.normal_mode["<space>fqf"] = "<cmd>Telescope quickfix<cr>"
+lvim.keys.normal_mode["<space>fqh"] = "<cmd>Telescope quickfixhistory<cr>"
 
 lvim.keys.insert_mode["jk"] = "<Esc>"
 lvim.keys.insert_mode["kk"] = "<Esc>"
 lvim.keys.insert_mode["kj"] = "<Esc>"
+
+lvim.builtin.which_key.mappings['f'] = {}
+
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
 -- override a default keymapping
@@ -218,3 +224,25 @@ lvim.plugins = {
 --     require("nvim-treesitter.highlight").attach(0, "bash")
 --   end,
 -- })
+local M = {}
+
+local actions = require "telescope.actions"
+local action_state = require "telescope.actions.state"
+
+local function run_selection(prompt_bufnr, map)
+    actions.select_default:replace(function()
+        actions.close(prompt_bufnr)
+        local selection = action_state.get_selected_entry()
+        vim.cmd([[!git log ]] .. selection[1])
+    end)
+    return true
+end
+
+M.git_log = function()
+    -- example for running a command on a file
+    local opts = {
+        attach_mappings = run_selection
+    }
+    require('telescope.builtin').find_files(opts)
+end
+return M

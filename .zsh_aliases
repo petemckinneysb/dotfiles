@@ -1,0 +1,81 @@
+SFUI_DIR="~/github/qpp-submission-client"
+SFAPI_DIR="~/github/qpp-submissions-api"
+
+alias reload="source ~/.zshrc"
+alias sshfix="ssh-add --apple-use-keychain ~/.ssh/id_rsa"
+alias vim="nvim"
+
+
+alias format-modified="gscut | xargs npx prettier --write"
+alias unmerged="git diff --name-only --diff-filter=U --relative"
+
+#configs
+alias zrc="nvim ~/.zshrc"
+alias zenv="nvim ~/.zshenv"
+alias zalias="nvim ~/.zsh_aliases"
+alias vrc="nvim ~/.config/nvim/init.vim"
+
+alias qsc="cd ${SFUI_DIR}"
+alias qsa="cd ${SFAPI_DIR}"
+alias qs="cd ~/github/qpp-style"
+alias qss="cd ~/github/qpp-submission-server"
+alias dotfiles="cd ~/github/dotfiles"
+alias qmr="cd ~/qpp-mock-responses"
+alias gscut="git status -s | cut -c4-"
+alias fzadd="git status -s | cut -c4- | fzf -m | xargs git add"
+alias fzreset="git status -s | cut -c4- | fzf -m | xargs git reset"
+alias fzco="git branch | fzf | xargs git checkout"
+alias prname="git branch --show-current | pbcopy && git branch --show-current"
+alias version="jq -r '.version' package.json"
+alias notes="nvim ~/notes"
+
+alias search-edit="fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs nvim"
+
+#jira cli
+alias cp-jira="jira issue list -a$(jira me) -s\"In Progress\" --plain | grep -v \"KEY\" | fzf | awk '{print \$2}' | xargs echo"
+alias jira-me="jira issue list -a$(jira me) -s\"In Progress\" -s\"Verified\" -s\"Open\""
+
+alias onpush="gh gist clone https://gist.github.com/petemckinneysb/1dc811e1d0f895726a6270a25a5d18e7 gist && cat gist/*.ts | pbcopy && rm -rf gist"
+alias sessions="ls ~/vim-sessions | grep vim | fzf | pbcopy"
+
+extract_ticket() {
+  branch=$(git rev-parse --abbrev-ref HEAD)
+  branch=${branch#*/}; 
+  array=(${(s/-/)branch}); 
+
+  echo "${array[1]}-${array[2]}"
+}
+
+jira_move() {
+  read input
+  if [ -z "$input" ]; then
+    echo "Please provide an issue #"
+    return 1
+  fi
+
+  jira issue move $input "Verified"
+}
+                                                
+#gh related things
+gh_cli_create_pr() {
+  if [ -z "$1" ]; then
+    echo "Please provide a base branch."
+    return 1
+  fi
+
+  base_branch="$1"
+  current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+  # Creating a new PR with the specified base branch using GitHub CLI
+  gh pr create --base "$base_branch" --head "$current_branch"
+}
+
+update_fix_version() {
+  fix_version=$(jq -r '.version' package.json)
+  ticket=$(extract_ticket)
+  jira issue edit "$ticket" --fix-version "UI $fix_version" --no-input
+}
+
+pr_ready() {
+  gh_cli_create_pr $1 && { extract_ticket | jira_move }
+}

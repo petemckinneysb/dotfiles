@@ -1,46 +1,5 @@
-SFUI_DIR="~/github/qpp-submission-client"
-SFAPI_DIR="~/github/qpp-submissions-api"
-
-alias reload="source ~/.zshrc"
-alias sshfix="ssh-add --apple-use-keychain ~/.ssh/id_rsa"
-alias vim="lvim"
-
-alias dotfiles="cd ~/github/dotfiles"
-
-alias format-modified="gscut | xargs npx prettier --write"
-
-#configs
-alias zrc="lvim ~/.zshrc"
-alias zenv="lvim ~/.zshenv"
-alias vrc="lvim ~/.config/nvim/init.vim"
-
-alias qsc="cd ${SFUI_DIR}"
-alias qsa="cd ${SFAPI_DIR}"
-alias qs="cd ~/github/qpp-style"
-alias qss="cd ~/github/qpp-submission-server"
-alias dots="cd ~/github/dotfiles"
-alias qmr="cd ~/qpp-mock-responses"
-alias startsfui="bash $HOME/github/scripts/start-qpp-submission-feedback-ui.sh"
-
-alias git-commit-format='git diff develop --name-only | xargs npx prettier --write'
-alias git-status-format='git status -s | cut -c4- | xargs npx prettier --write'
-
-
-alias bsr-client="cd ~/github/beneficiary-reporting-client"
-alias bsr-api="cd ~/github/beneficiary-reporting-api"
-
-alias gscut="git status -s | cut -c4-"
-alias fzadd="git status -s | cut -c4- | fzf -m | xargs git add"
-alias fzreset="git status -s | cut -c4- | fzf -m | xargs git reset"
-alias fzcheckout="git branch | fzf | xargs git checkout"
-alias prname="git branch --show-current | pbcopy"
-
-alias version="cat package.json | grep -i \"version\""
-
-alias notes="lvim ~/notes"
-
-# lunar vim on path
-export PATH="$PATH:$HOME/.local/bin"
+#zmodload zsh/zprof
+source ~/.zsh_aliases
 
 export PIPENV_VIEW_IN_PROJECT=1
 
@@ -51,6 +10,9 @@ export PATH=$PATH:/Applications/Sublime\ Merge.app/Contents/SharedSupport/bin
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 export PUPPETEER_EXECUTABLE_PATH=`which chromium`
 
+
+export QPP_FLAKY_RUNS=50
+export QPP_CLIENT_REPO="/Users/43159/github/qpp-submission-client"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -61,7 +23,7 @@ export ZSH="/Users/43159/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="fwalch"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -135,7 +97,7 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-export EDITOR='lvim'
+export EDITOR='nvim'
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -164,7 +126,11 @@ export EDITOR='lvim'
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
+#
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-eval $(thefuck --alias oops)
+
+
+# Load Angular CLI autocompletion.
+#source <(ng completion script)
+#zprof

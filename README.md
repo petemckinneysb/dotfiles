@@ -18,6 +18,18 @@ Most dependencies are installed using brew. Check the github README.md installat
 
 [jq command-line JSON processor](https://github.com/jqlang/jq)
 
+```bash
+brew tap ankitpokhrel/jira-cli
+brew install jira-cli
+```
+
+Make sure to create a personal access token in jira through the /ViewProfile.jspa (Profile picture in the top right, click on Profile) page and set it in your preferred zsh/bash file:
+
+```bash
+export JIRA_API_TOKEN=yourpersonalaccesstoken
+
+```
+
 [fzf fuzzy finder](https://github.com/junegunn/fzf)
 
 [jira cli](https://github.com/ankitpokhrel/jira-cli)

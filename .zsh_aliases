@@ -40,6 +40,9 @@ alias onpush="gh gist clone https://gist.github.com/petemckinneysb/1dc811e1d0f89
 alias sessions="ls ~/vim-sessions | grep vim | fzf | pbcopy"
 alias open_ticket="extract_ticket | xargs -I {} jira open {}"
 
+#gh cli
+alias gist-modified="git ls-files --modified | xargs gh gist create"
+
 extract_ticket() {
   branch=$(git rev-parse --abbrev-ref HEAD)
   branch=${branch#*/}; 
@@ -56,6 +59,10 @@ jira_move() {
   fi
 
   jira issue move $input "Verified"
+}
+
+jira_move_ticket() {
+  { extract_ticket | jira_move }
 }
                                                 
 #gh related things
@@ -79,5 +86,5 @@ update_fix_version() {
 }
 
 pr_ready() {
-  gh_cli_create_pr $1 && { extract_ticket | jira_move }
+  gh_cli_create_pr $1 && jira_move_ticket && update_fix_version
 }

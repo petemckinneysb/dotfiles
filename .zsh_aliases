@@ -74,17 +74,36 @@ gh_cli_create_pr() {
 
   base_branch="$1"
   current_branch=$(git rev-parse --abbrev-ref HEAD)
+  title=$(git branch --show-current | pbcopy && git branch --show-current)
+
+  PR_BODY=$(generate_pr_template)
 
   # Creating a new PR with the specified base branch using GitHub CLI
-  gh pr create --base "$base_branch" --head "$current_branch"
+  gh pr create --base "$base_branch" --head "$current_branch" --title="$title" --body "$PR_BODY"
 }
 
 update_fix_version() {
-  fix_version=$(jq -r '.version' package.json)
+  fix_version=$(get_fix_version)
   ticket=$(extract_ticket)
   jira issue edit "$ticket" --fix-version "UI $fix_version" --no-input
 }
 
+get_fix_version() {
+  jq -r '.version' package.json
+}
+
+generate_pr_template() {
+  template_string=$(cat .github/PULL_REQUEST_TEMPLATE.md)
+  ticket=$(extract_ticket)
+  jira_link="https://jira.cms.gov/browse/$ticket"
+  fix_version=$(get_fix_version)
+
+  template_string=${template_string/"https:\/\/jira.cms.gov\/browse\/QPPSF-"/$jira_link}
+  template_string=${template_string/x\.xxx\.x/$fix_version}
+
+  echo $template_string
+}
+
 pr_ready() {
-  gh_cli_create_pr $1 && jira_move_ticket && update_fix_version
+  gh_cli_create_pr $1 && jira_move_ticket && update_fix_version && $(gh pr view --web)
 }

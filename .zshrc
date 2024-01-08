@@ -130,11 +130,11 @@ export NVM_DIR="$HOME/.nvm"
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Automatically start tmux in zsh if it's not already running
-if command -v tmux>/dev/null; then # Checks if tmux is installed
-  if [ -z $TMUX ] && [ -z $SSH_CONNECTION ]; then
-    tmux attach-session -t 0 || tmux new-session -s sfui
-  fi
-fi
+# if command -v tmux>/dev/null; then # Checks if tmux is installed
+#   if [ -z $TMUX ] && [ -z $SSH_CONNECTION ]; then
+#     tmux attach-session -t 0 || tmux new-session -s sfui
+#   fi
+# fi
 
 
 # Load Angular CLI autocompletion.

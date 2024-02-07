@@ -2,8 +2,8 @@
 
 ```
     ln -sf ~/github/dotfiles/.tmux.conf ~/.tmux.conf
-    ln -sf ~/github/dotfiles/.tmux.conf ~/.zshrc
-    ln -sf ~/github/dotfiles/.tmux.conf ~/.zsh_aliases
+    ln -sf ~/github/dotfiles/.zshrc ~/.zshrc
+    ln -sf ~/github/dotfiles/.zsh_aliases ~/.zsh_aliases
 ```
 
 # tmux plugins: 

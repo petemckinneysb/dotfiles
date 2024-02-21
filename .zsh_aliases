@@ -40,6 +40,22 @@ alias onpush="gh gist clone https://gist.github.com/petemckinneysb/1dc811e1d0f89
 alias sessions="ls ~/vim-sessions | grep vim | fzf | pbcopy"
 alias open_ticket="extract_ticket | xargs -I {} jira open {}"
 
+
+#aws
+recent_build() {
+  build_id=$(aws codebuild list-builds-for-project --project-name qpp-sf-impl-codebuild-client --sort-order DESCENDING --max-items 1 | jq -r '.ids[]' )
+
+  sourceVersion=$(aws codebuild batch-get-builds --ids $build_id --query 'builds[].resolvedSourceVersion' | jq -r '.[0]')
+
+  echo "$sourceVersion"
+}
+
+tickets_released() {
+  commit=$(recent_build)
+  log=$(git log $commit...HEAD --oneline)
+  echo $log
+}
+
 #gh cli
 alias gist-modified="git ls-files --modified | xargs gh gist create"
 

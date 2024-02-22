@@ -41,7 +41,7 @@ alias sessions="ls ~/vim-sessions | grep vim | fzf | pbcopy"
 alias open_ticket="extract_ticket | xargs -I {} jira open {}"
 
 
-#aws
+#aws cli stuff
 recent_build() {
   build_id=$(aws codebuild list-builds-for-project --project-name qpp-sf-impl-codebuild-client --sort-order DESCENDING --max-items 1 | jq -r '.ids[]' )
 
@@ -53,7 +53,17 @@ recent_build() {
 tickets_released() {
   commit=$(recent_build)
   log=$(git log $commit...HEAD --oneline)
-  echo $log
+
+  declare -a tickets
+
+  while IFS= read -r line; do
+    ticket_number=$(echo ${line:l} | grep -Eo 'qppsf(\s*|-)[0-9]*')
+    tickets+="$ticket_number"
+  done <<< "$log"
+
+  for ticket in "${tickets[@]}"; do
+    echo "${ticket:u}"
+  done
 }
 
 #gh cli

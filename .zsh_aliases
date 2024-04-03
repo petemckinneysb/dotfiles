@@ -79,6 +79,28 @@ new_branch() {
   git checkout -b "$branch_prefix/$ticket_number-$branch_description"
 }
 
+parse_git_log() {
+  if [ -z "$1" ]; then
+    echo "Please provide base branch to parse git log"
+    return 1
+  fi
+
+  base_branch=$1
+  current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+  log=$(git log "origin/$base_branch"..$current_branch)
+
+  declare -a pr_logs
+
+  while IFS= read -r line; do
+    if [[ "$line" != "commit"* ]] && [[ "$line" != "Author:"* ]] && [[ "$line" != "Date:"* ]] && [[ "$line" != *"QPPSF-"* ]]; then
+      pr_logs+="$line\n"
+    fi
+  done <<< "$log"
+
+  echo "$pr_logs"
+}
+
 #gh cli
 alias gist-modified="git ls-files --modified | xargs gh gist create"
 
@@ -104,7 +126,7 @@ jira_move_ticket() {
   { extract_ticket | jira_move }
 }
                                                 
-#gh related things
+#gh related zsh functions
 gh_cli_create_pr() {
   if [ -z "$1" ]; then
     echo "Please provide a base branch."
@@ -115,7 +137,11 @@ gh_cli_create_pr() {
   current_branch=$(git rev-parse --abbrev-ref HEAD)
   title=$(git branch --show-current | pbcopy && git branch --show-current)
 
-  PR_BODY=$(generate_pr_template)
+
+  pr_log=$(parse_git_log $1)
+  PR_BODY=$(generate_pr_template $pr_log)
+
+  echo "$PR_BODY"
 
   # Creating a new PR with the specified base branch using GitHub CLI
   gh pr create --base "$base_branch" --head "$current_branch" --title="$title" --body "$PR_BODY"
@@ -132,17 +158,38 @@ get_fix_version() {
 }
 
 generate_pr_template() {
+  if [ -z "$1" ]; then
+    echo "Please provide log to generate pr_template"
+    return 1
+  fi
+
   template_string=$(cat .github/PULL_REQUEST_TEMPLATE.md)
   ticket=$(extract_ticket)
   jira_link="https://jira.cms.gov/browse/$ticket"
-  fix_version=$(get_fix_version)
 
   template_string=${template_string/"https:\/\/jira.cms.gov\/browse\/QPPSF-"/$jira_link}
-  template_string=${template_string/x\.xxx\.x/$fix_version}
+  template_string=${template_string/"<!-- A detailed multi line description of the PR. -->"/$1}
 
   echo $template_string
 }
 
 pr_ready() {
   gh_cli_create_pr $1 && jira_move_ticket && update_fix_version && $(gh pr view --web)
+}
+
+pr_dry_run() {
+  if [ -z "$1" ]; then
+    echo "Please provide a base branch."
+    return 1
+  fi
+
+  base_branch="$1"
+  current_branch=$(git rev-parse --abbrev-ref HEAD)
+  title=$(git branch --show-current | pbcopy && git branch --show-current)
+
+
+  pr_log=$(parse_git_log $1)
+  PR_BODY=$(generate_pr_template $pr_log)
+
+  echo "$PR_BODY"
 }

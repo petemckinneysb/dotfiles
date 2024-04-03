@@ -62,8 +62,21 @@ tickets_released() {
   done <<< "$log"
 
   for ticket in "${tickets[@]}"; do
-    echo "${ticket:u}"
+    echo "https://jira.cms.gov/browse/${ticket:u}"
   done
+}
+
+#git 
+new_branch() {
+  ticket_number=$(jira-me --plain | fzf | grep -o 'QPPSF-[0-9]*')
+  echo"$ticket_number" 
+  echo "Please enter a branch prefix"
+  read branch_prefix
+
+  echo "Please enter a branch description"
+  read branch_description
+
+  git checkout -b "$branch_prefix/$ticket_number-$branch_description"
 }
 
 #gh cli

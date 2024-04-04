@@ -43,15 +43,15 @@ alias open_ticket="extract_ticket | xargs -I {} jira open {}"
 
 #aws cli stuff
 recent_build() {
-  build_id=$(aws codebuild list-builds-for-project --project-name qpp-sf-impl-codebuild-client --sort-order DESCENDING --max-items 1 | jq -r '.ids[]' )
+  local build_id=$(aws codebuild list-builds-for-project --project-name qpp-sf-impl-codebuild-client --sort-order DESCENDING --max-items 1 | jq -r '.ids[]' )
 
-  sourceVersion=$(aws codebuild batch-get-builds --ids $build_id --query 'builds[].resolvedSourceVersion' | jq -r '.[0]')
+  local sourceVersion=$(aws codebuild batch-get-builds --ids $build_id --query 'builds[].resolvedSourceVersion' | jq -r '.[0]')
 
   echo "$sourceVersion"
 }
 
 tickets_released() {
-  commit=$(recent_build)
+  local commit=$(recent_build)
   log=$(git log $commit...HEAD --oneline)
 
   declare -a tickets
@@ -68,7 +68,7 @@ tickets_released() {
 
 #git 
 new_branch() {
-  ticket_number=$(jira-me --plain | fzf | grep -o 'QPPSF-[0-9]*')
+  local ticket_number=$(jira-me --plain | fzf | grep -o 'QPPSF-[0-9]*')
   echo"$ticket_number" 
   echo "Please enter a branch prefix"
   read branch_prefix
@@ -85,8 +85,8 @@ parse_git_log() {
     return 1
   fi
 
-  base_branch=$1
-  current_branch=$(git rev-parse --abbrev-ref HEAD)
+  local base_branch=$1
+  local current_branch=$(git rev-parse --abbrev-ref HEAD)
 
   log=$(git log "origin/$base_branch"..$current_branch)
 
@@ -105,9 +105,9 @@ parse_git_log() {
 alias gist-modified="git ls-files --modified | xargs gh gist create"
 
 extract_ticket() {
-  branch=$(git rev-parse --abbrev-ref HEAD)
-  branch=${branch#*/}; 
-  array=(${(s/-/)branch}); 
+  local branch=$(git rev-parse --abbrev-ref HEAD)
+  local branch=${branch#*/}; 
+  local array=(${(s/-/)branch}); 
 
   echo "${array[1]}-${array[2]}"
 }
@@ -133,12 +133,12 @@ gh_cli_create_pr() {
     return 1
   fi
 
-  base_branch="$1"
-  current_branch=$(git rev-parse --abbrev-ref HEAD)
-  title=$(git branch --show-current | pbcopy && git branch --show-current)
+  local base_branch="$1"
+  local current_branch=$(git rev-parse --abbrev-ref HEAD)
+  local title=$(git branch --show-current | pbcopy && git branch --show-current)
 
 
-  pr_log=$(parse_git_log $1)
+  local pr_log=$(parse_git_log $1)
   PR_BODY=$(generate_pr_template $pr_log)
 
   echo "$PR_BODY"
@@ -148,8 +148,8 @@ gh_cli_create_pr() {
 }
 
 update_fix_version() {
-  fix_version=$(get_fix_version)
-  ticket=$(extract_ticket)
+  local fix_version=$(get_fix_version)
+  local ticket=$(extract_ticket)
   jira issue edit "$ticket" --fix-version "UI $fix_version" --no-input
 }
 
@@ -163,7 +163,7 @@ generate_pr_template() {
     return 1
   fi
 
-  template_string=$(cat .github/PULL_REQUEST_TEMPLATE.md)
+  local template_string=$(cat .github/PULL_REQUEST_TEMPLATE.md)
   ticket=$(extract_ticket)
   jira_link="https://jira.cms.gov/browse/$ticket"
 
@@ -183,13 +183,87 @@ pr_dry_run() {
     return 1
   fi
 
-  base_branch="$1"
-  current_branch=$(git rev-parse --abbrev-ref HEAD)
-  title=$(git branch --show-current | pbcopy && git branch --show-current)
+  local base_branch="$1"
+  local current_branch=$(git rev-parse --abbrev-ref HEAD)
+  local title=$(git branch --show-current | pbcopy && git branch --show-current)
 
 
-  pr_log=$(parse_git_log $1)
+  local pr_log=$(parse_git_log $1)
   PR_BODY=$(generate_pr_template $pr_log)
 
   echo "$PR_BODY"
+}
+
+# metrics
+
+previous_sprint() {
+  echo "$(jira sprint list --state closed --table | head -n 2)"
+}
+previous_sprint_dates() {
+  local dates=$(previous_sprint | tail -n 1 | awk '{print $6, $8}')
+
+  local datesArray=(${(s: :)dates})
+  local startDate=$datesArray[1]
+  local endDate=$datesArray[2]
+
+  echo $startDate $endDate
+}
+
+lines_of_code() {
+  local cloc_output=$(cloc --exclude-dir="node_modules,dist,coverage,cis-metrics,.idea,.angular,.vscode,local-mock-data" .)
+  parse_cloc_sum_line $cloc_output
+}
+
+deployment_lines_of_code() {
+  local cloc_output=$(cloc "./Deploy/codebuild/buildspecs/buildspec.yml")
+  parse_cloc_sum_line $cloc_output
+}
+
+parse_cloc_sum_line() {
+  local sum_line=$(echo "$1" | tail -n 2 | head -n 1)
+  echo "$(echo "$sum_line" | awk '{print $NF}')"
+}
+
+unit_test_coverage() {
+  local lines_coverage=$(npm run coverage)
+  #the coverage shows up whenever it wants to but usally within a couple seconds of the tests finishing.
+  #hack to wait for the coverage report to show up
+  sleep 5
+  echo -n "$lines_coverage" | tail -n 2 | head -n 1
+}
+
+prod_builds() {
+  local build_output=$(aws codebuild batch-get-builds --ids $(aws codebuild list-builds-for-project --project-name qpp-sf-prod-codebuild-client --sort-order DESCENDING | jq -r ".ids[]"))
+
+  local builds_in_range=$(echo "$build_output" | jq "[.builds[] | select(.startTime >= \"$1\" and .startTime <= \"$2\" and .endTime <= \"$2\" and .buildStatus == \"SUCCEEDED\")"])
+  local builds_array=$(echo "$builds_in_range" | jq "[.[] | {id, startTime, buildStatus, resolvedSourceVersion}]")
+
+  echo "$builds_array" | jq -r
+}
+
+gather_metrics() {
+  local dates=("${(@s/ /)$(previous_sprint_dates)}")
+
+  local startDate=$dates[1]
+  local endDate=$dates[2]
+
+  git checkout `git rev-list -1 --before="$dates[2]" HEAD origin/develop`
+
+  lines=$(lines_of_code)
+  deployment_lines=$(deployment_lines_of_code)
+  test_coverage=$(unit_test_coverage)
+
+  local builds_array=$(prod_builds $startDate $endDate) 
+  local prod_count=$(echo "$builds_array" | jq 'length')
+
+  clear
+  echo "$(previous_sprint)\n"
+  echo "Lines of code: $lines"
+  echo "Unit Test Coverage: $test_coverage"
+  echo "Deployment lines of code: $deployment_lines"
+  echo "Production Deployments: $prod_count"
+
+  # open sharepoint link to metrics spreadsheet
+  # open metrics documentation
+  # open sonar cloud
 }

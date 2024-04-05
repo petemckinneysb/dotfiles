@@ -43,7 +43,7 @@ alias open_ticket="extract_ticket | xargs -I {} jira open {}"
 
 #aws cli stuff
 recent_build() {
-  local build_id=$(aws codebuild list-builds-for-project --project-name qpp-sf-impl-codebuild-client --sort-order DESCENDING --max-items 1 | jq -r '.ids[]' )
+  local build_id=$(aws codebuild list-builds-for-project --project-name $IMPL_SFUI_BUILD_NAME --sort-order DESCENDING --max-items 1 | jq -r '.ids[]' )
 
   local sourceVersion=$(aws codebuild batch-get-builds --ids $build_id --query 'builds[].resolvedSourceVersion' | jq -r '.[0]')
 
@@ -233,7 +233,7 @@ unit_test_coverage() {
 }
 
 prod_builds() {
-  local build_output=$(aws codebuild batch-get-builds --ids $(aws codebuild list-builds-for-project --project-name qpp-sf-prod-codebuild-client --sort-order DESCENDING | jq -r ".ids[]"))
+  local build_output=$(aws codebuild batch-get-builds --ids $(aws codebuild list-builds-for-project --project-name $PROD_SFUI_BUILD_NAME --sort-order DESCENDING | jq -r ".ids[]"))
 
   local builds_in_range=$(echo "$build_output" | jq "[.builds[] | select(.startTime >= \"$1\" and .startTime <= \"$2\" and .endTime <= \"$2\" and .buildStatus == \"SUCCEEDED\")"])
   local builds_array=$(echo "$builds_in_range" | jq "[.[] | {id, startTime, buildStatus, resolvedSourceVersion}]")
@@ -263,7 +263,7 @@ gather_metrics() {
   echo "Deployment lines of code: $deployment_lines"
   echo "Production Deployments: $prod_count"
 
-  # open sharepoint link to metrics spreadsheet
-  # open metrics documentation
-  # open sonar cloud
+  open $SONAR_CLOUD_URL
+  open $METRICS_SPREADSHEET_URL
+  open $METRICS_CONFLUENCE_URL
 }

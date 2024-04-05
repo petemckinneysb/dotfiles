@@ -1,7 +1,7 @@
 SFUI_DIR="~/github/qpp-submission-client"
 SFAPI_DIR="~/github/qpp-submissions-api"
 
-alias reload="source ~/.zshrc"
+alias reload="source ~/.zshrc ~/.zshenv"
 alias sshfix="ssh-add --apple-use-keychain ~/.ssh/id_rsa"
 alias vim="nvim"
 
@@ -43,7 +43,7 @@ alias open_ticket="extract_ticket | xargs -I {} jira open {}"
 
 #aws cli stuff
 recent_build() {
-  local build_id=$(aws codebuild list-builds-for-project --project-name $IMPL_SFUI_BUILD_NAME --sort-order DESCENDING --max-items 1 | jq -r '.ids[]' )
+  local build_id=$(aws codebuild list-builds-for-project --project-name "$IMPL_SFUI_BUILD_NAME" --sort-order DESCENDING --max-items 1 | jq -r '.ids[]' )
 
   local sourceVersion=$(aws codebuild batch-get-builds --ids $build_id --query 'builds[].resolvedSourceVersion' | jq -r '.[0]')
 
@@ -225,15 +225,14 @@ parse_cloc_sum_line() {
 }
 
 unit_test_coverage() {
-  local lines_coverage=$(npm run coverage)
-  #the coverage shows up whenever it wants to but usally within a couple seconds of the tests finishing.
-  #hack to wait for the coverage report to show up
-  sleep 5
-  echo -n "$lines_coverage" | tail -n 2 | head -n 1
+  local coverage_output=$(npm run coverage)
+  local coverage_line=$(cat "./coverage/lcov-report/lcov-report/index.html" | head -n 47 | tail -n 1)
+
+  echo -n "$coverage_line" | sed 's/.*>\(.*\)% <.*/\1/'
 }
 
 prod_builds() {
-  local build_output=$(aws codebuild batch-get-builds --ids $(aws codebuild list-builds-for-project --project-name $PROD_SFUI_BUILD_NAME --sort-order DESCENDING | jq -r ".ids[]"))
+  local build_output=$(aws codebuild batch-get-builds --ids $(aws codebuild list-builds-for-project --project-name "$PROD_SFUI_BUILD_NAME" --sort-order DESCENDING | jq -r ".ids[]"))
 
   local builds_in_range=$(echo "$build_output" | jq "[.builds[] | select(.startTime >= \"$1\" and .startTime <= \"$2\" and .endTime <= \"$2\" and .buildStatus == \"SUCCEEDED\")"])
   local builds_array=$(echo "$builds_in_range" | jq "[.[] | {id, startTime, buildStatus, resolvedSourceVersion}]")
@@ -263,7 +262,7 @@ gather_metrics() {
   echo "Deployment lines of code: $deployment_lines"
   echo "Production Deployments: $prod_count"
 
-  open $SONAR_CLOUD_URL
-  open $METRICS_SPREADSHEET_URL
-  open $METRICS_CONFLUENCE_URL
+  open "$SONAR_CLOUD_URL"
+  open "$METRICS_SPREADSHEET_URL"
+  open "$METRICS_CONFLUENCE_URL"
 }

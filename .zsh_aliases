@@ -195,10 +195,10 @@ pr_dry_run() {
 }
 
 # metrics
-
 previous_sprint() {
   echo "$(jira sprint list --state closed --table | head -n 2)"
 }
+
 previous_sprint_dates() {
   local dates=$(previous_sprint | tail -n 1 | awk '{print $6, $8}')
 
@@ -256,7 +256,7 @@ gather_metrics() {
   local prod_count=$(echo "$builds_array" | jq 'length')
 
   clear
-  echo "$(previous_sprint)\n"
+  echo "$(previous_sprint | tail -n 1 | awk '{print $2 $3 $4 $5}')\n"
   echo "Lines of code: $lines"
   echo "Unit Test Coverage: $test_coverage"
   echo "Deployment lines of code: $deployment_lines"

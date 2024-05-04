@@ -8,18 +8,6 @@ fi
 #zmodload zsh/zprof
 source ~/.zsh_aliases
 
-export PIPENV_VIEW_IN_PROJECT=1
-
-# load git auto complete
-#autoload -Uz compinit && compinit
-export PATH=$PATH:/Applications/Sublime\ Merge.app/Contents/SharedSupport/bin
-
-export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-export PUPPETEER_EXECUTABLE_PATH=`which chromium`
-
-
-export QPP_FLAKY_RUNS=50
-export QPP_CLIENT_REPO="/Users/43159/github/qpp-submission-client"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 

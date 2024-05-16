@@ -67,6 +67,27 @@ tickets_released() {
 }
 
 #git 
+
+#prints any branches not currently assigned to me (not master not develop)
+# for use with piping to:  | xargs git branch -D
+clean_branches() {
+  current_branch=$(git branch --show-current)
+  tickets=$(jira-me --plain | sed '1d' | awk '{print $2}')
+  branches=$(git --no-pager branch | grep -v "master\|develop\|$current_branch")
+
+  for ticket in "${tickets[@]}"; do
+    filtered_branches=$(echo "$branches" | grep -i "$ticket")
+  done
+
+  echo "Keeping the following branches \n$filtered_branches"
+
+  regex=$(printf '|%s' "${filtered_branches}")
+  regex="${regex:1}"
+  branches_to_delete=$(echo "$branches" | grep -v -E -i "$regex")
+
+  echo "$branches_to_delete" 
+}
+
 new_branch() {
   local ticket_number=$(jira-me --plain | fzf | grep -o 'QPPSF-[0-9]*')
   echo"$ticket_number" 

@@ -39,3 +39,7 @@ export JIRA_API_TOKEN=yourpersonalaccesstoken
 [neovim](https://github.com/neovim/neovim)
 
 [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh)
+
+## Alacrtty
+
+> ln -s ~/github/dotfiles/alacritty ~/.config/alacritty

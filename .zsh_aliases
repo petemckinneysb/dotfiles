@@ -62,7 +62,9 @@ tickets_released() {
   done <<< "$log"
 
   for ticket in "${tickets[@]}"; do
-    echo "https://jira.cms.gov/browse/${ticket:u}"
+    if [[ -n "$ticket" ]]; then
+      echo "https://jira.cms.gov/browse/${ticket:u}"
+    fi
   done
 }
 

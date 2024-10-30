@@ -1,0 +1,28 @@
+#aws cli stuff
+recent_build() {
+  local build_id=$(aws codebuild list-builds-for-project --project-name "$IMPL_SFUI_BUILD_NAME" --sort-order DESCENDING --max-items 1 | jq -r '.ids[]' )
+
+  local sourceVersion=$(aws codebuild batch-get-builds --ids $build_id --query 'builds[].resolvedSourceVersion' | jq -r '.[0]')
+
+  echo "$sourceVersion"
+}
+
+tickets_released() {
+  local commit=$(recent_build)
+  log=$(git log $commit...HEAD --oneline)
+
+  declare -a tickets
+
+  while IFS= read -r line; do
+    ticket_number=$(echo ${line:l} | grep -Eo 'qppsf(\s*|-)[0-9]*')
+    tickets+="$ticket_number"
+  done <<< "$log"
+
+  for ticket in "${tickets[@]}"; do
+    if [[ -n "$ticket" ]]; then
+      echo "https://jira.cms.gov/browse/${ticket:u}"
+    fi
+  done
+}
+
+# aws codebuild batch-get-builds --ids "$IMPL_SFUI_BUILD_NAME"

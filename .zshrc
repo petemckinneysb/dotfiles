@@ -90,6 +90,11 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 export EDITOR='nvim'
+export GIT_EDITOR='nvim'
+
+for file in ~/github/dotfiles/zsh/*; do
+  [ -f "$file" ] && source "$file"
+done
 
 # export MANPATH="/usr/local/man:$MANPATH"
 

@@ -19,7 +19,7 @@ lines_of_code() {
 }
 
 deployment_lines_of_code() {
-  local cloc_output=$(cloc "./Deploy/codebuild/buildspecs/buildspec.yml")
+  local cloc_output=$(cloc "/Users/43159/github/qpp-submission-client/Deploy/codebuild/buildspecs/deploy.yml")
   parse_cloc_sum_line $cloc_output
 }
 
@@ -29,7 +29,7 @@ parse_cloc_sum_line() {
 }
 
 unit_test_coverage() {
-  local coverage_output=$(npm run coverage)
+  local coverage_output=$(npm run test:prepush)
   local coverage_line=$(cat "./coverage/lcov-report/lcov-report/index.html" | head -n 47 | tail -n 1)
 
   echo -n "$coverage_line" | sed 's/.*>\(.*\)% <.*/\1/'

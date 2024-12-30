@@ -44,6 +44,10 @@ export JIRA_API_TOKEN=yourpersonalaccesstoken
 
 > ln -s ~/github/dotfiles/alacritty ~/.config/alacritty
 
+## Kitty
+
+> ln -s ~/github/dotfiles/kitty ~/.config/kitty
+
 ## Commands
 
 NOTE: All commands assume the git branch will contian the jira ticket number

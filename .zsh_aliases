@@ -33,7 +33,7 @@ alias search-edit="fd --type f --hidden --exclude .git | fzf-tmux -p --reverse |
 
 #jira cli
 alias cp-jira="jira issue list -a$(jira me) -s\"In Progress\" --plain | grep -v \"KEY\" | fzf | awk '{print \$2}' | xargs echo"
-alias jira-me="jira issue list -a$(jira me) -s\"In Progress\" -s\"Verified\" -s\"Open\""
+alias jira-me="jira issue list -a$(jira me) -s\"In Progress\" -s\"Verified\" -s\"Open\" -s\"Reopened\""
 alias reconcile-fix="jira issue list -a$(jira me) -s\"In Progress\" -s\"Verified\" -s\"Open\" -s\"Ready To Deploy\" -s\"Verify in IMPL\" -q \"fixVersion IS EMPTY\""
 
 alias onpush="gh gist clone https://gist.github.com/petemckinneysb/1dc811e1d0f895726a6270a25a5d18e7 gist && cat gist/*.ts | pbcopy && rm -rf gist"

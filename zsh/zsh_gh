@@ -11,6 +11,10 @@ new_branch() {
   git checkout -b "$branch_prefix/$ticket_number-$branch_description"
 }
 
+jira_co() {
+  fzf | grep -o 'QPPSF-[0-9]*' | xargs -I {} bash -c 'git --no-pager branch -r | sed "s/origin\///" | fzf -q {}' | xargs git checkout
+}
+
 parse_git_log() {
   if [ -z "$1" ]; then
     echo "Please provide base branch to parse git log"

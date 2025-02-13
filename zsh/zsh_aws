@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 #aws cli stuff
 recent_build() {
   local build_id=$(aws codebuild list-builds-for-project --project-name "$IMPL_SFUI_BUILD_NAME" --sort-order DESCENDING --max-items 1 | jq -r '.ids[]' )

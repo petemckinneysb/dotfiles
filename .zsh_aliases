@@ -1,5 +1,6 @@
 SFUI_DIR="~/github/qpp-submission-client"
 SFAPI_DIR="~/github/qpp-submissions-api"
+SFUI_NEW="~/github/qpp-submissions-feedback-ui"
 
 alias reload="source ~/.zshrc ~/.zshenv"
 alias sshfix="ssh-add --apple-use-keychain ~/.ssh/id_rsa"
@@ -15,6 +16,8 @@ alias zenv="nvim ~/.zshenv"
 alias zalias="nvim ~/.zsh_aliases"
 alias vrc="nvim ~/.config/nvim/init.vim"
 
+
+alias sfui="cd ${SFUI_NEW}"
 alias qsc="cd ${SFUI_DIR}"
 alias qsa="cd ${SFAPI_DIR}"
 alias qs="cd ~/github/qpp-style"

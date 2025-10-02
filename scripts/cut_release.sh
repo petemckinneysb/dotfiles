@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-CURRENT_VERSION=$(jq -r '.version' package.json)
-NEXT_VERSION="${major}.${minor}.${patch}"
+CURRENT_VERSION="$(jq -r '.version' package.json)"
+echo "$CURRENT_VERSION"
 
 IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
-minor=$((minor + 1))
 
+minor=$((minor + 1))
+NEXT_VERSION="${major}.${minor}.${patch}"
 
 # Create release branch
 git checkout -b "release/v${CURRENT_VERSION}"

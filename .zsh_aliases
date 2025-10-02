@@ -1,6 +1,7 @@
 SFUI_DIR="~/github/qpp-submission-client"
 SFAPI_DIR="~/github/qpp-submissions-api"
 SFUI_NEW="~/github/qpp-submissions-feedback-ui"
+MODERN="~/github/modernization-json/"
 
 alias reload="source ~/.zshrc ~/.zshenv"
 alias sshfix="ssh-add --apple-use-keychain ~/.ssh/id_rsa"
@@ -16,8 +17,19 @@ alias zenv="nvim ~/.zshenv"
 alias zalias="nvim ~/.zsh_aliases"
 alias vrc="nvim ~/.config/nvim/init.vim"
 
-
 alias sfui="cd ${SFUI_NEW}"
+alias modern="cd ${MODERN}"
+
+alias overview="modern && npm run copy:json --workspace=overview && cd -"
+alias ia="modern && npm run copy:json --workspace=l4-ia && cd -"
+alias pi="modern && npm run copy:json --workspace=l4-pi && cd -"
+alias cost="modern && npm run copy:json --workspace=l4-cost && cd -"
+alias cpb="modern && npm run copy:json --workspace=l4-complex-patient-bonus && cd -"
+alias cahps="modern && npm run copy:json --workspace=l5-cahps && cd -"
+alias iands="modern && npm run copy:json --workspace=l5-items-services && cd -"
+alias targeted="modern && npm run copy:json --workspace=l3-tr-alert-popup && cd -"
+alias modern_conf="open https://confluence.cms.gov/display/QPPPRACTICE/Feedback+UI+Evolution"
+
 alias qsc="cd ${SFUI_DIR}"
 alias qsa="cd ${SFAPI_DIR}"
 alias qs="cd ~/github/qpp-style"
@@ -29,7 +41,7 @@ alias fzadd="git status -s | cut -c4- | fzf -m | xargs git add"
 alias fzreset="git status -s | cut -c4- | fzf -m | xargs git reset"
 alias prname="git branch --show-current | pbcopy && git branch --show-current"
 alias version="jq -r '.version' package.json"
-alias notes="nvim ~/notes"
+alias notes="cd ~/notes && nvim ~/notes"
 
 alias search-edit="fd --type f --hidden --exclude .git | fzf-tmux -p --reverse | xargs nvim"
 
@@ -49,6 +61,7 @@ alias jira-fred="jira issue list -a\"Frederick Huang\" -s\"In Progress\" -s\"Ver
 alias jira-james="jira issue list -a\"James Kramer\" -s\"In Progress\" -s\"Verified\" -s\"Open\" -s\"Reopened\""
 alias jira-bobby="jira issue list -a\"Roberto Velasco\" -s\"In Progress\" -s\"Verified\" -s\"Open\" -s\"Reopened\""
 alias jira-korey="jira issue list -a\"Korey Roberts\" -s\"In Progress\" -s\"Verified\" -s\"Open\" -s\"Reopened\""
+alias jira-troy="jira issue list -a\"Troy Grosh\" -s\"In Progress\" -s\"Verified\" -s\"Open\" -s\"Reopened\""
 
 alias alex="jira-alex --plain | jira_co"
 alias hermann="jira-hermann --plain | jira_co"
@@ -58,6 +71,10 @@ alias james="jira-james --plain | jira_co"
 alias bobby="jira-bobby --plain | jira_co"
 alias korey="jira-korey --plain | jira_co"
 alias pete="jira-me --plain | jira_co"
+alias troy="jira-troy --plain | jira_co"
 
 #gh cli
 alias gist-modified="git ls-files --modified | xargs gh gist create"
+
+#releases
+alias increment-version="npm version patch --no-git-tag-version && git add package.json package-lock.json && git commit -m \"Update version\""

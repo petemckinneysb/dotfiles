@@ -54,7 +54,7 @@ alias onpush="gh gist clone https://gist.github.com/petemckinneysb/1dc811e1d0f89
 alias sessions="ls ~/vim-sessions | grep vim | fzf | pbcopy"
 alias open_ticket="extract_ticket | xargs -I {} jira open {}"
 
-alias jira-alex="jira issue list -a\"Oleksandr Tychynskyi\" -s\"In Progress\" -s\"Verified\" -s\"Open\" -s\"Reopened\""
+alias jira-alex="jira issue list -a\"Alex Tychynskyi\" -s\"In Progress\" -s\"Verified\" -s\"Open\" -s\"Reopened\""
 alias jira-hermann="jira issue list -a\"Hermann Kontcho\" -s\"In Progress\" -s\"Verified\" -s\"Open\" -s\"Reopened\""
 alias jira-tim="jira issue list -a\"Timothy Toy\" -s\"In Progress\" -s\"Verified\" -s\"Open\" -s\"Reopened\""
 alias jira-fred="jira issue list -a\"Frederick Huang\" -s\"In Progress\" -s\"Verified\" -s\"Open\" -s\"Reopened\""
